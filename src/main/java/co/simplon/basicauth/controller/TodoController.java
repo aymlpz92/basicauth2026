@@ -2,6 +2,7 @@ package co.simplon.basicauth.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +22,13 @@ public class TodoController {
         this.todoRepository = todoRepositoryInjected;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("")
     public List<TodoEntity> getAll() {
         return this.todoRepository.findAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public TodoEntity create(@RequestBody TodoEntity entity) {
         return this.todoRepository.save(entity);
