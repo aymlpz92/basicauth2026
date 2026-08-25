@@ -2,6 +2,7 @@ package co.simplon.basicauth.entity;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -70,4 +71,6 @@ public class UserEntity implements UserDetails {
     public void setAuthorities(Set<RoleEntity> authorities) {
         this.authorities = authorities;
     }
+
+
 }

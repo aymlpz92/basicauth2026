@@ -1,6 +1,7 @@
 package co.simplon.basicauth.controller;
 
 import org.apache.catalina.User;
+import org.hibernate.query.NativeQuery;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.simplon.basicauth.dto.LoginDto;
 import co.simplon.basicauth.entity.UserEntity;
 import co.simplon.basicauth.repository.UserRepository;
 import co.simplon.basicauth.service.TokenService;
@@ -38,10 +40,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserEntity user) {
+    public LoginDto login(@RequestBody UserEntity user) {
         Authentication authentication = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()
                 ));
-        return tokenService.generateToken(authentication);
+        String token = tokenService.generateToken(authentication);
+        return new LoginDto(token, user.getUsername());
     }
 }
