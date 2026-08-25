@@ -32,10 +32,10 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
 
-    @Value("${jwt.secret")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public SecurityConfig(AuthService authServiceInjected, JwtDecoder jwtDecoderByPublicKeyValue) {
+    public SecurityConfig(AuthService authServiceInjected) {
         this.userDetailsService = authServiceInjected;
     }
 
@@ -56,7 +56,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // Désactive CSRF pour cette application
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))

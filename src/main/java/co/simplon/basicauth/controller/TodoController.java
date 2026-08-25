@@ -22,13 +22,13 @@ public class TodoController {
         this.todoRepository = todoRepositoryInjected;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_USER', 'SCOPE_ROLE_ADMIN')")
     @GetMapping("")
     public List<TodoEntity> getAll() {
         return this.todoRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     @PostMapping("")
     public TodoEntity create(@RequestBody TodoEntity entity) {
         return this.todoRepository.save(entity);

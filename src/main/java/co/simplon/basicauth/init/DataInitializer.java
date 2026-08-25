@@ -1,7 +1,10 @@
 package co.simplon.basicauth.init;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +28,7 @@ public class DataInitializer implements CommandLineRunner {
     private final SecurityBuilder securityBuilder;
 
     public DataInitializer(TodoRepository todoRepositoryInjected, RoleRepository roleRepositoryInjected, UserRepository userRepositoryInjected,
-            PasswordEncoder passwordEncoderInjected, SecurityBuilder securityBuilder) {
+            PasswordEncoder passwordEncoderInjected, @Qualifier("authenticationManagerBuilder") SecurityBuilder securityBuilder) {
         this.todoRepository = todoRepositoryInjected;
         this.roleRepository = roleRepositoryInjected;
         this.userRepository = userRepositoryInjected;
@@ -55,7 +58,7 @@ public class DataInitializer implements CommandLineRunner {
 
         UserEntity user = new UserEntity();
         user.setUsername("bastien@example.com");
-        user.setPassword("tacostacos");
+        user.setPassword(passwordEncoder.encode("tacostacos"));
         user.setAuthorities(Set.of(roleUser));
         userRepository.save(user);
 
